@@ -1,0 +1,8 @@
+metadata
+target
+src/**/*.xml
+*.log
+
+.idea/**/sonarlint
+
+.idea/**/libraries

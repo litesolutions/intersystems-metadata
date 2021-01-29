@@ -1,0 +1,56 @@
+ROUTINE tif
+  Set folder = "/home/irisowner/metadata/"
+  Set filename = "test.tiff"
+  Set filename = "la.tif"
+  Do tif(folder, filename)
+  Quit
+tif(folder, filename) {
+#define READWORD $sconvert(fs.Read(2),"U2",endian)
+#define READLONG $sconvert(fs.Read(4),"U4",endian)
+#define WORD(%val) $sconvert(%val,"U2",endian)
+#define LONG(%val) $sconvert(%val,"U4",endian)
+
+  Set fs = ##class(%Stream.FileBinary).%New()
+  Set fs.Filename = ##class(%File).NormalizeFilename(filename, folder)
+  Set FileSize = fs.Size
+  
+  Set Width = 0, Height = 0
+
+  Set Identifier = fs.Read(2)
+  If Identifier=$Char(73,73) {
+    Set endian = 0
+  } ElseIf Identifier=$Char(77,77) {
+    Set endian = 1
+  } Else {
+    Throw "Bad Format"
+  }
+  Set Version = fs.Read(2)
+
+  Set IFDOffset = $$$READLONG
+  
+  Do {
+    Do fs.MoveTo(IFDOffset+1)
+    
+    Set NumDirEntries = $$$READWORD
+    For i=1:1:NumDirEntries {
+      Set tag = fs.Read(12)
+      Set TagID = $$$WORD($Extract(tag,1,2))
+      Set DataType = $$$WORD($Extract(tag,3,4))
+      If (TagID=256)||(TagID=257) {
+        Set Value = -1
+        If DataType=3 Set Value = $$$WORD($Extract(tag,9,12))
+        If DataType=4 Set Value = $$$LONG($Extract(tag,9,12))
+        Set:TagID=256 Width = Value
+        Set:TagID=257 Height = Value
+      }
+    }
+    Set NextIFDOffset = $$$READLONG
+    Set IFDOffset = NextIFDOffset
+    
+    Quit:(Height>0)&&(Width>0)
+  } While NextIFDOffset>0
+
+  ZWrite Height,Width
+}
+  
+  

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  iris:
+    image: store/intersystems/irishealth-community:2020.4.0.524.0
+    init: true
+    command:
+      - -a
+      - /home/irisowner/metadata/dev-init.sh
+    working_dir: /home/irisowner/metadata
+    ports:
+      - 52773
+    volumes:
+      - .:/home/irisowner/metadata

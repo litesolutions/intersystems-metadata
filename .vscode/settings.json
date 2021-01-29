@@ -1,0 +1,15 @@
+{
+  "objectscript.conn": {
+    "active": true,
+    "username": "_SYSTEM",
+    "password": "SYS",
+    "ns": "USER",
+    "docker-compose": {
+      "service": "iris"
+    }    
+  },
+  "objectscript.export": {
+    "folder": "src",
+    "addCategory": false,
+  }
+}
