@@ -51,12 +51,3 @@ combine:
 	@python3 combine.py
 	cat `find metadata -iname 'classesDiff.csv' | sort ` > metadata/classes.csv
 	cat `find metadata -iname 'methodsDiff.csv' | sort ` > metadata/methods.csv
-
-jar:
-	$(eval VERSION = $(shell mvn help:evaluate -Dexpression=project.version -q -DforceStdout))
-	# @mvn versions:set -DnewVersion=$(VERSION)
-	@mvn --batch-mode clean deploy
-	# @zip -qd target/intersystems-metadata-$(VERSION).jar 'librocksdbjni-linux32*.so'
-	# @zip -qd target/intersystems-metadata-$(VERSION).jar 'librocksdbjni-linux-*.so'
-	ls -la target/*.jar
-	# @mvn -B deploy:deploy-file -Dfile=target/intersystems-metadata-$(VERSION).jar -DpomFile=pom.xml -Durl=https://maven.pkg.github.com/litesolutions/intersystems-metadata

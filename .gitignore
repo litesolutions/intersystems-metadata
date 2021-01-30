@@ -1,3 +1,4 @@
+metadata
 target
 src/**/*.xml
 *.log
@@ -5,5 +6,3 @@ src/**/*.xml
 .idea/**/sonarlint
 
 .idea/**/libraries
-**/classesDiff.csv
-**/methodsDiff.csv
