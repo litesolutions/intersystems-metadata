@@ -24,6 +24,7 @@ help:
 2020.2: IMAGE = store/intersystems/irishealth-community:2020.2.0.211.0
 2020.3: IMAGE = store/intersystems/irishealth-community:2020.3.0.221.0
 2020.4: IMAGE = store/intersystems/irishealth-community:2020.4.0.524.0
+2021.1: IMAGE = store/intersystems/irishealth-community:2021.1.0.205.0
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
 
