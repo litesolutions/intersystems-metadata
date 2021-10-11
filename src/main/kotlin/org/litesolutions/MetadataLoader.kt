@@ -61,6 +61,7 @@ fun main(args: Array<String>) {
             val files = HashMap<String, Int>()
             files["classes.csv"] = 3
             files["methods.csv"] = 4
+            files["properties.csv"] = 4
 
             files.forEach { (fileName, num) ->
                 val (count, versions) = File(dir, fileName).useLines { lines -> processFile(db, lines, num) }

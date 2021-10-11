@@ -70,6 +70,16 @@ class InterSystemsMetadata private constructor() {
         return null
     }
 
+    private fun getPropertyInfo(version: String, className: String, propertyName: String?): List<String>? {
+        val classInfo = getClassInfo(version, className) ?: return null
+        val classList = listOf(className) + classInfo[1].split("~").filter { it.isNotEmpty() }
+        classList.forEach { clsName ->
+            val propertyInfo = getObjectInfo("property", version, normalizeClassName(clsName), propertyName)
+            if (propertyInfo != null) return propertyInfo
+        }
+        return null
+    }
+
     @Suppress("unused")
     fun classExists(version: String = "", className: String): Boolean {
         return classOpen(version, className) != null
@@ -92,6 +102,19 @@ class InterSystemsMetadata private constructor() {
         return classOpen(version, className)?.let { classDef ->
             val methodInfo = getMethodInfo(version, className, methodName)
             return methodInfo?.let { MethodDefinition(classDef, methodInfo) }
+        }
+    }
+
+    @Suppress("unused")
+    fun prpertyExists(version: String = "", className: String, propertyName: String): Boolean {
+        return propertyOpen(version, className, propertyName) != null
+    }
+
+    @Suppress("unused")
+    fun propertyOpen(version: String = "", className: String, propertyName: String): PropertyDefinition? {
+        return classOpen(version, className)?.let { classDef ->
+            val propertyInfo = getPropertyInfo(version, className, propertyName)
+            return propertyInfo?.let { PropertyDefinition(classDef, propertyInfo) }
         }
     }
 }
