@@ -42,11 +42,12 @@ src/org/litesolutions/Metadata.cls: old
 
 .PHONY: old
 old: 
-	$(eval CONTAINER = $(shell docker run --rm --init -d -v `pwd`:/home/irisowner/metadata store/intersystems/iris-community:2020.4.0.524.0 -s true))
-	@docker exec -i $(CONTAINER) /usr/irissys/dev/Cloud/ICM/waitISC.sh IRIS 10 "sign-on inhibited"
-	@docker exec -i $(CONTAINER) iris session iris -B '##class(%SYSTEM.OBJ).ImportDir("/home/irisowner/metadata/generator/src/","*.cls","ck",,1)'
-	@docker exec -i $(CONTAINER) iris session iris -B '##class(%SYSTEM.OBJ).ExportPackage("org.litesolutions","/home/irisowner/metadata/generator/src/org.litesolutions.Metadata.xml","/diffexport/exportversion=2014.1")'
+	$(eval CONTAINER = $(shell docker run --rm -d -v `pwd`:/home/irisowner/metadata store/intersystems/irishealth-community:2021.1.0.215.0))
+	@docker exec -i $(CONTAINER) /usr/irissys/dev/Cloud/ICM/waitISC.sh IRIS 60 "running"
+	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ImportDir("/home/irisowner/metadata/generator/src/","*.cls","ck",,1)'
+	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ExportPackage("org.litesolutions","/home/irisowner/metadata/generator/src/org.litesolutions.Metadata.xml","/diffexport/exportversion=2014.1")'
 	@docker kill $(CONTAINER)
+
 
 combine:
 	@python3 combine.py

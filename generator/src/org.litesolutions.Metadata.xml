@@ -2,22 +2,18 @@
 <Export generator="Cache" version="25">
 <Class name="org.litesolutions.Metadata">
 <Super>%Library.RegisteredObject</Super>
-<TimeCreated>65773,34947.250771</TimeCreated>
+<TimeCreated>66028,70131.307735</TimeCreated>
 
 <Parameter name="Classes">
 <Default>Name,Super,Abstract,Persistent,Final,Deprecated,Hidden,SqlTable,System,Ensemble</Default>
 </Parameter>
 
 <Parameter name="Methods">
-<Default>ClassName,Name,ClassMethod,Abstract,Deprecated,ReturnType</Default>
+<Default>ClassName,Name,ClassMethod,Abstract,Deprecated,ReturnType,FormalSpec</Default>
 </Parameter>
 
 <Parameter name="Properties">
 <Default>ClassName,Name,Type</Default>
-</Parameter>
-
-<Parameter name="ProcessProperties">
-<Default>0</Default>
 </Parameter>
 
 <Method name="Extract">
@@ -51,12 +47,10 @@
     $$$ThrowOnError(%methodsStream.LinkToFile(fileName))  
     Do %methodsStream.WriteLine(..#Methods)
 
-    If ..#ProcessProperties {
-      Set %propertiesStream = ##class(%Stream.FileCharacter).%New()  
-      Set fileName = ##class(%File).NormalizeFilename("properties.csv", folder)
-      $$$ThrowOnError(%propertiesStream.LinkToFile(fileName))  
-      Do %propertiesStream.WriteLine(..#Properties)
-    }
+    Set %propertiesStream = ##class(%Stream.FileCharacter).%New()  
+    Set fileName = ##class(%File).NormalizeFilename("properties.csv", folder)
+    $$$ThrowOnError(%propertiesStream.LinkToFile(fileName))  
+    Do %propertiesStream.WriteLine(..#Properties)
 
     Set namespaces = $ListBuild("%SYS") _ $Select( $ZVersion["IRIS": $ListBuild("USER", "HSLIB", "HSSYS"), 1: $ListBuild("ENSEMBLE"))
     Set ptr = 0 
@@ -66,7 +60,7 @@
 
     $$$ThrowOnError(%classesStream.%Save())
     $$$ThrowOnError(%methodsStream.%Save())
-    If ..#ProcessProperties $$$ThrowOnError(%propertiesStream.%Save())
+    $$$ThrowOnError(%propertiesStream.%Save())
     Write !,"Successfully exported"
   } Catch (ex) {
     Write !,"Error:",!
@@ -264,6 +258,7 @@
     Set deprecated = +methodDef.Deprecated
     #EndIf
     Set returnType = methodDef.ReturnType
+    Set formalSpec = methodDef.FormalSpec
 
     Set row = $ListBuild(
         className, 
@@ -271,7 +266,8 @@
         $$$bool(classMethod), 
         $$$bool(abstract), 
         $$$bool(deprecated), 
-        returnType
+        returnType,
+        formalSpec
       )
     
     Set ^CacheTemp.Metadata(className, "methods", methodName) = row
@@ -287,9 +283,6 @@
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
   Set tSC = $$$OK
-  If '..#ProcessProperties {
-    Quit tSC
-  }
 
   Set className = classDef.Name
   Set key = ""
