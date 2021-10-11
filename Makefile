@@ -51,5 +51,6 @@ old:
 
 combine:
 	@python3 combine.py
-	cat `find metadata -iname 'classesDiff.csv' | sort ` > metadata/classes.csv
-	cat `find metadata -iname 'methodsDiff.csv' | sort ` > metadata/methods.csv
+	cat `find metadata -iname 'classesDiff.csv'    | sort ` > metadata/classes.csv
+	cat `find metadata -iname 'methodsDiff.csv'    | sort ` > metadata/methods.csv
+	cat `find metadata -iname 'propertiesDiff.csv' | sort ` > metadata/properties.csv
