@@ -25,7 +25,11 @@ def readFiles(folder):
     with open(os.path.join(folder, "methods.csv")) as file:
         methods = file.readlines()
         methods.pop(0)
-    return classes, methods
+    with open(os.path.join(folder, "properties.csv")) as file:
+        properties = file.readlines()
+        properties.pop(0)
+
+    return classes, methods, properties
 
 
 def getDiffferences(cnt, curr, prev, deletedList):
@@ -71,14 +75,22 @@ def process(kind, curr, prev, version: str, cnt: int, saveTo: str, deletedList=[
     return deletedList
 
 
-def processDir(classes, methods, classesPrev, methodsPrev, curr):
+def processDir(currData, prevData, currVer):
     start_time = time.time()
-    deletedList = process("class", classes, classesPrev, curr, 1,
-                          os.path.join(metadataPath, curr, "classesDiff.csv"))
-    process("method", methods, methodsPrev, curr, 2,
-            os.path.join(metadataPath, curr, "methodsDiff.csv"), deletedList)
+    classes, methods, properties = currData
+    classesPrev, methodsPrev, propertiesPrev = prevData
 
-    print("Execution time for %s: %.3f" % (curr, time.time() - start_time))
+    deletedList = process(
+        "class", classes, classesPrev, currVer, 1,
+        os.path.join(metadataPath, currVer, "classesDiff.csv"))
+    process(
+        "method", methods, methodsPrev, currVer, 2,
+        os.path.join(metadataPath, currVer, "methodsDiff.csv"), deletedList)
+    process(
+        "property", properties, propertiesPrev, currVer, 2,
+        os.path.join(metadataPath, currVer, "propertiesDiff.csv"), deletedList)
+
+    print("Execution time for %s: %.3f" % (currVer, time.time() - start_time))
 
 
 if __name__ == '__main__':
@@ -87,22 +99,25 @@ if __name__ == '__main__':
     dirs = list(filter(lambda dirname: re.match("\d{4}\.\d", dirname), dirs))
 
     last = dirs[-1]
-    classes, methods = readFiles(last)
+    classes, methods, properties = readFiles(last)
     with open(os.path.join(metadataPath, last, "classesDiff.csv"), "w") as file:
         writeLines(file, last, "class", 1, "", list(map(splitLine, classes)))
     with open(os.path.join(metadataPath, last, "methodsDiff.csv"), "w") as file:
         writeLines(file, last, "method", 2, "", list(map(splitLine, methods)))
+    with open(os.path.join(metadataPath, last, "propertiesDiff.csv"), "w") as file:
+        writeLines(file, last, "property", 2, "",
+                   list(map(splitLine, properties)))
 
-    curr = dirs[0]
-    classesPrev, methodsPrev = readFiles(curr)
+    currVer = dirs[0]
+    prevData = readFiles(currVer)
     for (prev) in dirs[1:]:
-        print("%s - %s" % (curr, prev))
-        classes, methods = readFiles(prev)
+        print("%s - %s" % (currVer, prev))
+        currData = readFiles(prev)
 
         Process(
             target=processDir,
-            args=(classes, methods, classesPrev, methodsPrev, curr)
+            args=(currData, prevData, currVer)
         ).start()
 
-        curr = prev
-        classesPrev, methodsPrev = classes, methods
+        currVer = prev
+        prevData = currData

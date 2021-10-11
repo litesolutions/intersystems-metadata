@@ -3,11 +3,9 @@ Class org.litesolutions.Metadata Extends %Library.RegisteredObject
 
 Parameter Classes = "Name,Super,Abstract,Persistent,Final,Deprecated,Hidden,SqlTable,System,Ensemble";
 
-Parameter Methods = "ClassName,Name,ClassMethod,Abstract,Deprecated,ReturnType";
+Parameter Methods = "ClassName,Name,ClassMethod,Abstract,Deprecated,ReturnType,FormalSpec";
 
 Parameter Properties = "ClassName,Name,Type";
-
-Parameter ProcessProperties = 0;
 
 ClassMethod Extract(folder = "/home/irisowner/metadata") As %Status
 {
@@ -37,12 +35,10 @@ ClassMethod Extract(folder = "/home/irisowner/metadata") As %Status
     $$$ThrowOnError(%methodsStream.LinkToFile(fileName))  
     Do %methodsStream.WriteLine(..#Methods)
 
-    If ..#ProcessProperties {
-      Set %propertiesStream = ##class(%Stream.FileCharacter).%New()  
-      Set fileName = ##class(%File).NormalizeFilename("properties.csv", folder)
-      $$$ThrowOnError(%propertiesStream.LinkToFile(fileName))  
-      Do %propertiesStream.WriteLine(..#Properties)
-    }
+    Set %propertiesStream = ##class(%Stream.FileCharacter).%New()  
+    Set fileName = ##class(%File).NormalizeFilename("properties.csv", folder)
+    $$$ThrowOnError(%propertiesStream.LinkToFile(fileName))  
+    Do %propertiesStream.WriteLine(..#Properties)
 
     Set namespaces = $ListBuild("%SYS") _ $Select( $ZVersion["IRIS": $ListBuild("USER", "HSLIB", "HSSYS"), 1: $ListBuild("ENSEMBLE"))
     Set ptr = 0 
@@ -52,7 +48,7 @@ ClassMethod Extract(folder = "/home/irisowner/metadata") As %Status
 
     $$$ThrowOnError(%classesStream.%Save())
     $$$ThrowOnError(%methodsStream.%Save())
-    If ..#ProcessProperties $$$ThrowOnError(%propertiesStream.%Save())
+    $$$ThrowOnError(%propertiesStream.%Save())
     Write !,"Successfully exported"
   } Catch (ex) {
     Write !,"Error:",!
@@ -230,6 +226,7 @@ ClassMethod ExtractMethods(classDef As %Dictionary.CompiledClass) As %Status
     Set deprecated = +methodDef.Deprecated
     #EndIf
     Set returnType = methodDef.ReturnType
+    Set formalSpec = methodDef.FormalSpec
 
     Set row = $ListBuild(
         className, 
@@ -237,7 +234,8 @@ ClassMethod ExtractMethods(classDef As %Dictionary.CompiledClass) As %Status
         $$$bool(classMethod), 
         $$$bool(abstract), 
         $$$bool(deprecated), 
-        returnType
+        returnType,
+        formalSpec
       )
     
     Set ^CacheTemp.Metadata(className, "methods", methodName) = row
@@ -249,9 +247,6 @@ ClassMethod ExtractMethods(classDef As %Dictionary.CompiledClass) As %Status
 ClassMethod ExtractProperties(classDef As %Dictionary.CompiledClass) As %Status
 {
   Set tSC = $$$OK
-  If '..#ProcessProperties {
-    Quit tSC
-  }
 
   Set className = classDef.Name
   Set key = ""
