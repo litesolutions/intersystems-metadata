@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <Class name="org.litesolutions.Metadata">
 <Super>%Library.RegisteredObject</Super>
-<TimeCreated>66028,70131.307735</TimeCreated>
+<TimeCreated>66029,25902.393725</TimeCreated>
 
 <Parameter name="Classes">
 <Default>Name,Super,Abstract,Persistent,Final,Deprecated,Hidden,SqlTable,System,Ensemble</Default>
@@ -259,6 +259,7 @@
     #EndIf
     Set returnType = methodDef.ReturnType
     Set formalSpec = methodDef.FormalSpec
+    Set formalSpec = $Translate(formalSpec, ",", "~")
 
     Set row = $ListBuild(
         className, 

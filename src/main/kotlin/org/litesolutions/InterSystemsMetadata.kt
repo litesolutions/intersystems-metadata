@@ -106,7 +106,7 @@ class InterSystemsMetadata private constructor() {
     }
 
     @Suppress("unused")
-    fun prpertyExists(version: String = "", className: String, propertyName: String): Boolean {
+    fun propertyExists(version: String = "", className: String, propertyName: String): Boolean {
         return propertyOpen(version, className, propertyName) != null
     }
 

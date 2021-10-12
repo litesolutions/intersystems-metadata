@@ -1,5 +1,6 @@
 package org.litesolutions
 
+@Suppress("MemberVisibilityCanBePrivate")
 class MethodDefinition(classDefinition: ClassDefinition, methodInfo: List<String>) {
     val classDefinition: ClassDefinition
     val name: String
@@ -7,7 +8,7 @@ class MethodDefinition(classDefinition: ClassDefinition, methodInfo: List<String
     val abstract: Boolean
     val deprecated: Boolean
     val returnType: String
-    val formalSpec: String
+    val formalSpec: List<String>
 
     init {
         val infoSize = methodInfo.size
@@ -17,6 +18,8 @@ class MethodDefinition(classDefinition: ClassDefinition, methodInfo: List<String
         abstract = if (infoSize > 2) methodInfo[2] === "1" else false
         deprecated = if (infoSize > 3) methodInfo[3] === "1" else false
         returnType = if (infoSize > 4) methodInfo[4] else ""
-        formalSpec = if (infoSize > 5) methodInfo[5] else ""
+        formalSpec = if (infoSize > 5 && methodInfo[5] != null)  listOf(
+            *methodInfo[5]!!.split("~").toTypedArray()
+        ) else emptyList()
     }
 }

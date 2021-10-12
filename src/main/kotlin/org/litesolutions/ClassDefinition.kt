@@ -1,5 +1,6 @@
 package org.litesolutions
 
+@Suppress("MemberVisibilityCanBePrivate")
 class ClassDefinition(classInfo: List<String?>) {
     val name: String?
     val parent: List<String>

@@ -227,6 +227,7 @@ ClassMethod ExtractMethods(classDef As %Dictionary.CompiledClass) As %Status
     #EndIf
     Set returnType = methodDef.ReturnType
     Set formalSpec = methodDef.FormalSpec
+    Set formalSpec = $Translate(formalSpec, ",", "~")
 
     Set row = $ListBuild(
         className, 
