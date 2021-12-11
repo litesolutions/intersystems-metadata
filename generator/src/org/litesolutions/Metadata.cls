@@ -50,6 +50,9 @@ ClassMethod Extract(folder = "/home/irisowner/metadata") As %Status
     $$$ThrowOnError(%methodsStream.%Save())
     $$$ThrowOnError(%propertiesStream.%Save())
     Write !,"Successfully exported"
+    Write !,"classes: ",%classesStream.Size
+    Write !,"methods: ",%methodsStream.Size
+    Write !,"properties: ",%propertiesStream.Size
   } Catch (ex) {
     Write !,"Error:",!
     Do ex.OutputToDevice()

@@ -1,5 +1,8 @@
 
-OPTIONS := -uroot --rm --init -v ${PWD}:/tmp/metadata -w /tmp/metadata --entrypoint /tmp/metadata/metadata.sh
+OPTIONS := -v ${PWD}/metadata.sh:/tmp/app/metadata.sh --entrypoint /tmp/app/metadata.sh 
+OPTIONS += -v ${PWD}/generator:/tmp/app/generator
+ENSOPTIONS := 
+IRISOPTIONS := -v `pwd`/iris.key:/usr/irissys/mgr/iris.key
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -24,9 +27,12 @@ help:
 2020.2: IMAGE = store/intersystems/irishealth-community:2020.2.0.211.0
 2020.3: IMAGE = store/intersystems/irishealth-community:2020.3.0.221.0
 2020.4: IMAGE = store/intersystems/irishealth-community:2020.4.0.524.0
-2021.1: IMAGE = store/intersystems/irishealth-community:2021.1.0.215.0
+2021.1: IMAGE = store/intersystems/irishealth-community:2021.1.0.215.3
+2021.2: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2021.2.0.617.0
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
+ensemble=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*ensemble.*/\1/p;d' $(MAKEFILE_LIST))
+iris=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*iris.*/\1/p;d' $(MAKEFILE_LIST))
 
 test:
 	@echo $(MAKEFILE_LIST)
@@ -35,17 +41,28 @@ test:
 .PHONY: all $(targets)
 all: $(targets)
 
+$(ensemble): OPTIONS += $(ENSOPTIONS)
+$(iris): OPTIONS += $(IRISOPTIONS)
+
 $(targets):
-	docker run ${OPTIONS} ${IMAGE}
+	mkdir -p metadata
+	$(eval CONTAINER := $(shell docker create ${OPTIONS} ${IMAGE}))
+	@docker start $(CONTAINER)
+	sleep 10
+	@docker wait $(CONTAINER)
+	@docker logs $(CONTAINER)
+	@docker cp $(CONTAINER):/tmp/metadata/$@ metadata/
+	@docker rm $(CONTAINER)
 
 src/org/litesolutions/Metadata.cls: old
 
 .PHONY: old
 old: 
-	$(eval CONTAINER = $(shell docker run --rm -d -v `pwd`:/home/irisowner/metadata store/intersystems/irishealth-community:2021.1.0.215.0))
-	@docker exec -i $(CONTAINER) /usr/irissys/dev/Cloud/ICM/waitISC.sh IRIS 60 "running"
+	$(eval CONTAINER = $(shell docker run --rm -d -v `pwd`:/home/irisowner/metadata containers.intersystems.com/intersystems/irishealth-community:2021.2.0.617.0))
+	@docker exec -i $(CONTAINER) /usr/irissys/dev/Cloud/ICM/waitISC.sh IRIS 120 "running"
 	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ImportDir("/home/irisowner/metadata/generator/src/","*.cls","ck",,1)'
-	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ExportPackage("org.litesolutions","/home/irisowner/metadata/generator/src/org.litesolutions.Metadata.xml","/diffexport/exportversion=2014.1")'
+	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ExportPackage("org.litesolutions","/tmp/org.litesolutions.Metadata.xml","/diffexport/exportversion=2014.1")'
+	@docker cp $(CONTAINER):/tmp/org.litesolutions.Metadata.xml generator/src/
 	@docker kill $(CONTAINER)
 
 

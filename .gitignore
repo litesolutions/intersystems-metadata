@@ -1,6 +1,6 @@
 metadata
 target
-src/**/*.xml
+generator/src/**/*.xml
 *.log
 
 .idea/**/sonarlint
