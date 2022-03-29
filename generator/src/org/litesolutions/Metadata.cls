@@ -208,7 +208,7 @@ ClassMethod ExtractMethods(classDef As %Dictionary.CompiledClass) As %Status
 
     #; We don't need ClientMethods
     Continue:methodDef.ClientMethod
-    Continue:(methodDef.Language'="")&&(methodDef.Language'="objectscript")&&(methodDef.Language'="cache")
+    #; Continue:(methodDef.Language'="")&&(methodDef.Language'="objectscript")&&(methodDef.Language'="cache")
     
     Continue:(methodDef.Origin'="")&&(methodDef.Origin'=className)
     
