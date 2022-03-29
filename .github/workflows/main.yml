@@ -24,6 +24,7 @@ jobs:
           - "2020.4"
           - "2021.1"
           - "2021.2"
+          - "2022.1"
     steps:
       - uses: actions/checkout@master
       - name: Export metadata
