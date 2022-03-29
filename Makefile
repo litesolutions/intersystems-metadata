@@ -29,7 +29,7 @@ help:
 2020.4: IMAGE = store/intersystems/irishealth-community:2020.4.0.547.0
 2021.1: IMAGE = store/intersystems/irishealth-community:2021.1.0.215.3
 2021.2: IMAGE = store/intersystems/irishealth-community:2021.2.0.617.0
-2021.2: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2022.1.0.152.0
+2022.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2022.1.0.152.0
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
 ensemble=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*ensemble.*/\1/p;d' $(MAKEFILE_LIST))
