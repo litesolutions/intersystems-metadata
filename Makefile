@@ -59,7 +59,7 @@ src/org/litesolutions/Metadata.cls: old
 
 .PHONY: old
 old: 
-	$(eval CONTAINER = $(shell docker run --rm -d -v `pwd`:/home/irisowner/metadata containers.intersystems.com/intersystems/irishealth-community:2021.2.0.617.0))
+	$(eval CONTAINER = $(shell docker run --rm -d -v `pwd`:/home/irisowner/metadata intersystemsdc/iris-community))
 	@docker exec -i $(CONTAINER) /usr/irissys/dev/Cloud/ICM/waitISC.sh IRIS 120 "running"
 	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ImportDir("/home/irisowner/metadata/generator/src/","*.cls","ck",,1)'
 	@docker exec -i $(CONTAINER) iris session iris '##class(%SYSTEM.OBJ).ExportPackage("org.litesolutions","/tmp/org.litesolutions.Metadata.xml","/diffexport/exportversion=2014.1")'
