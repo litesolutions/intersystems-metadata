@@ -6,13 +6,13 @@
 
     <artifactId>intersystems-metadata</artifactId>
     <groupId>org.litesolutions</groupId>
-    <version>1.0.4</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
 
     <name>intersystems-metadata</name>
 
     <properties>
-        <version>1.0.0</version>
+        <revision>1.0.5</revision>
         <jar.name>intersystems-metadata-${project.version}</jar.name>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

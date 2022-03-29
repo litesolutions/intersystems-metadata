@@ -63,3 +63,13 @@ jobs:
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump version
+        run: |
+          git config --global user.name 'ProjectBot'
+          git config --global user.email 'bot@users.noreply.github.com'
+          VERSION=$(sed -n 's|.*<revision>\(.*\)</revision>.*|\1|p' pom.xml | cut -d- -f1)
+          VERSION=`echo $VERSION | awk -F. '/[0-9]+\./{$NF++;print}' OFS=.`
+          sed -i "s|<revision>\(.*\)</revision>|<revision>$VERSION</revision>|" pom.xml
+          git add pom.xml
+          git commit -m 'auto bump version'
+          git push
