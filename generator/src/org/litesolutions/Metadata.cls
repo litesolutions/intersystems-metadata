@@ -94,7 +94,6 @@ ClassMethod CollectClasses(namespace = {$Namespace}, Output list = 0, ByRef uniq
     Continue:('sys)&&($Extract(className)="%")
     Continue:$Piece(className,".")="INFORMATION"
     Continue:$Piece(className,".")="%cspapp"
-    Continue:$Piece(className,".")="csr"
     Continue:$Data(unique(className))
     Set unique(className) = ""
     
@@ -143,8 +142,11 @@ ClassMethod ProcessClass(namespace = {$Namespace}, className As %String = "") As
 
   Set sys = ($Namespace = "%SYS")
 
-  Write !,className
   Set classDef = ##class(%Dictionary.CompiledClass).%OpenId(className, 0)
+  if '$ISOBJECT(classDef) {
+    Write !,className
+    Throw ##class(%Exception.General).%New("Can not process class: " + className)
+  }
   
   Set super = classDef.Super
   Set super = $Translate(super, ",", "~")
