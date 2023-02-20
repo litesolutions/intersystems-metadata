@@ -24,6 +24,7 @@ then
   echo "Installing ZPM"
   wget https://pm.community.intersystems.com/packages/zpm/latest/installer -qO /tmp/zpm.xml 
   echo -e "sys\nsys\n" \
+    "set sc = \$system.OBJ.DeletePackage(\"%ZPM\")\n" \
     "set sc = \$system.OBJ.Load(\"/tmp/zpm.xml\",\"ck\")\n" \
     "halt\n" \
   | $CCONTROL session $ISC_PACKAGE_INSTANCENAME 
