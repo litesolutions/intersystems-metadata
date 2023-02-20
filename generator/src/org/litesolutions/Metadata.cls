@@ -142,6 +142,7 @@ ClassMethod ProcessClass(namespace = {$Namespace}, className As %String = "") As
 
   Set sys = ($Namespace = "%SYS")
 
+  Write !,className
   Set classDef = ##class(%Dictionary.CompiledClass).%OpenId(className, 0)
   
   Set super = classDef.Super
