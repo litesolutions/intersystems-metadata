@@ -144,8 +144,8 @@ ClassMethod ProcessClass(namespace = {$Namespace}, className As %String = "") As
 
   Set classDef = ##class(%Dictionary.CompiledClass).%OpenId(className, 0)
   if '$ISOBJECT(classDef) {
-    Write !,className
-    Throw ##class(%Exception.General).%New("Can not process class: " + className)
+    Write !,"Cannot open compiled class: ", className
+    Quit tSC
   }
   
   Set super = classDef.Super
