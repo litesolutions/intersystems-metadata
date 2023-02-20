@@ -94,6 +94,7 @@ ClassMethod CollectClasses(namespace = {$Namespace}, Output list = 0, ByRef uniq
     Continue:('sys)&&($Extract(className)="%")
     Continue:$Piece(className,".")="INFORMATION"
     Continue:$Piece(className,".")="%cspapp"
+    Continue:$Piece(className,".")="csr"
     Continue:$Data(unique(className))
     Set unique(className) = ""
     
