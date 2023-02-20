@@ -22,14 +22,16 @@ help:
 2017.1: IMAGE = daimor/intersystems-ensemble:2017.1
 2017.2: IMAGE = daimor/intersystems-ensemble:2017.2
 2018.1: IMAGE = daimor/intersystems-ensemble:2018.1
-2019.4: IMAGE = store/intersystems/irishealth-community:2019.4.0.383.0
-2020.1: IMAGE = store/intersystems/irishealth-community:2020.1.0.217.1
-2020.2: IMAGE = store/intersystems/irishealth-community:2020.2.0.211.0
-2020.3: IMAGE = store/intersystems/irishealth-community:2020.3.0.221.0
-2020.4: IMAGE = store/intersystems/irishealth-community:2020.4.0.547.0
-2021.1: IMAGE = store/intersystems/irishealth-community:2021.1.0.215.3
-2021.2: IMAGE = store/intersystems/irishealth-community:2021.2.0.617.0
-2022.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2022.1.0.152.0
+2019.4: IMAGE = intersystemsdc/irishealth-community:2019.4.0.383.0-zpm
+2020.1: IMAGE = intersystemsdc/irishealth-community:2020.1.0.215.0-zpm
+2020.2: IMAGE = intersystemsdc/irishealth-community:2020.2.0.204.0-zpm
+2020.3: IMAGE = intersystemsdc/irishealth-community:2020.3.0.221.0-zpm
+2020.4: IMAGE = intersystemsdc/irishealth-community:2020.4.0.547.0-zpm
+2021.1: IMAGE = intersystemsdc/irishealth-community:2021.1.0.215.3-zpm
+2021.2: IMAGE = intersystemsdc/irishealth-community:2021.2.0.651.0-zpm
+2022.1: IMAGE = intersystemsdc/irishealth-community:2022.1.1.374.0-zpm
+2022.2: IMAGE = intersystemsdc/irishealth-community:2022.2.0.368.0-zpm
+2022.3: IMAGE = intersystemsdc/irishealth-community:2022.3.0.599.0-zpm
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
 ensemble=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*ensemble.*/\1/p;d' $(MAKEFILE_LIST))
