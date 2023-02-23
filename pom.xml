@@ -20,7 +20,7 @@
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <kotlin.version>1.4.21</kotlin.version>
         <kotlinx.version>0.3.1</kotlinx.version>
-        <rocksdb.version>6.15.2</rocksdb.version>
+        <rocksdb.version>7.9.2</rocksdb.version>
         <main.class>org.litesolutions.MetadataLoaderKt</main.class>
     </properties>
 
@@ -92,7 +92,8 @@
                                     <excludes>
                                         <exclude>librocksdbjni-linux32*.so</exclude>
                                         <exclude>librocksdbjni-linux*musl*.so</exclude>
-                                        <exclude>librocksdbjni-linux-*.so</exclude>
+                                        <exclude>librocksdbjni-linux-ppc*.so</exclude>
+                                        <exclude>librocksdbjni-linux-s390*.so</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
