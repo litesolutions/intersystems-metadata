@@ -31,7 +31,8 @@ help:
 2021.2: IMAGE = intersystemsdc/irishealth-community:2021.2.0.651.0-zpm
 2022.1: IMAGE = intersystemsdc/irishealth-community:2022.1.1.374.0-zpm
 2022.2: IMAGE = intersystemsdc/irishealth-community:2022.2.0.368.0-zpm
-2022.3: IMAGE = intersystemsdc/irishealth-community:2022.3.0.599.0-zpm
+2022.3: IMAGE = intersystemsdc/irishealth-community:2022.3.0.606.0-zpm
+2023.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2023.1.0.196.0
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
 ensemble=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*ensemble.*/\1/p;d' $(MAKEFILE_LIST))
