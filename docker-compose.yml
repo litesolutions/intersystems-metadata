@@ -1,7 +1,7 @@
 version: '3'
 services:
   iris:
-    image: containers.intersystems.com/intersystems/irishealth-community:2024.1
+    image: containers.intersystems.com/intersystems/irishealth-community:2024.3
     init: true
     command:
       - -a
