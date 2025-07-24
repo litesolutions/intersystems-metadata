@@ -36,6 +36,7 @@ help:
 2024.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.1
 2024.2: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.2
 2024.3: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.3
+2025.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2025.1
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
 ensemble=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*ensemble.*/\1/p;d' $(MAKEFILE_LIST))
