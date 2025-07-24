@@ -42,7 +42,7 @@ jobs:
           timeout_minutes: 20
           retry_on: error
           command: make ${{ matrix.version }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: metadata/${{ matrix.version }}/*.csv
           name: ${{ matrix.version }}
@@ -59,11 +59,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: metadata
       - run: make combine
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: metadata/*.csv
           name: metadata
