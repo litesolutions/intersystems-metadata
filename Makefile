@@ -32,10 +32,10 @@ help:
 2022.1: IMAGE = intersystemsdc/irishealth-community:2022.1.1.374.0-zpm
 2022.2: IMAGE = intersystemsdc/irishealth-community:2022.2.0.368.0-zpm
 2022.3: IMAGE = intersystemsdc/irishealth-community:2022.3.0.606.0-zpm
-2023.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2023.1
-2024.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.1
-2024.2: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.2
-2024.3: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2024.3
+2023.1: IMAGE = intersystemsdc/irishealth-community:2023.1.4.580.0-zpm
+2024.1: IMAGE = intersystemsdc/irishealth-community:2024.1-zpm
+2024.2: IMAGE = intersystemsdc/irishealth-community:2024.2-zpm
+2024.3: IMAGE = intersystemsdc/irishealth-community:2024.3-zpm
 2025.1: IMAGE = containers.intersystems.com/intersystems/irishealth-community:2025.1
 
 targets=$(shell sed 's/^\(20[0-9][0-9]\.[1-9]\): IMAGE.*/\1/p;d' $(MAKEFILE_LIST))
