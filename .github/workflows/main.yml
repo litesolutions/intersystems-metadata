@@ -33,6 +33,7 @@ jobs:
           - "2024.2"
           - "2024.3"
           - "2025.1"
+          - "2025.3"
     steps:
       - uses: actions/checkout@master
       - name: Export metadata
